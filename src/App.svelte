@@ -14,7 +14,7 @@
 	.app {
 		max-width: 600px;
 		margin: 0 auto;
-        padding: 16px;
+        padding: 0 16px 32px 16px;
 	}
     .menu {
         display: flex;
@@ -25,11 +25,17 @@
         cursor: pointer;
         width: 100%;
         height: 64px;
+        padding: 0;
+        border-bottom: 1px solid #cccccc;
+    }
+    .menu > li {
+        padding: 16px 0 32px 0;
+        text-align: center;
+        width: 50%;
     }
 </style>
 
 <div class="app">
-	{#if $history.length}
 		<ul class="menu">
             {#if selectedPage === 'questionaire'}
                 <li on:click={changePage('questionaire')}><b>Questionaire</b></li>
@@ -42,12 +48,16 @@
                 <li on:click={changePage('history')}>History</li>
             {/if}
 		</ul>
-	{/if}
 
 	{#if selectedPage === 'questionaire'}
 		<Questionaire on:newAnswerSaved={changePage('history')} />
 	
 	{:else}
+        {#if !$history.length}
+            <center>
+                No history saved yet.
+            </center>
+        {/if}
 		{#each $history as answer}
 			<HistoryAnswer {...answer} />
 		{/each}
