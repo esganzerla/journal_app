@@ -13,14 +13,15 @@
 
 	<script defer src='./bundle.js'></script>
     <script>
-      if (location.protocol === 'http:') location.href = 'https://esjournal.surge.sh'
+        if (location.protocol === 'http:' && location.host !== 'localhost:5000') {
+            location.href = 'https://esjournal.surge.sh'
+        }
 
-      if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-          .then(function() {
-                console.log('Service Worker Registered');
-          });
-      }
+        if('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+
+        Notification.requestPermission();
     </script>
 </head>
 

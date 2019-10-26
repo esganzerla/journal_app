@@ -46,6 +46,10 @@
 
         const dispatch = createEventDispatcher();
 		dispatch('newAnswerSaved');
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.controller.postMessage('notify');
+        }
 	}
 </script>
 
