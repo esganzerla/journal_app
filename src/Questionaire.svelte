@@ -1,7 +1,7 @@
 <script>
 	import { history } from './store.js'
 	import { createEventDispatcher } from 'svelte';
-    import {now, isLateNight, isLastNightAnswer, getRefDateTimestamp} from './date.helper.js';
+    import { isLateNight, isLastNightAnswer, isTodaysAnswer, getRefDateTimestamp} from './date.helper.js';
 
     const LATE_NIGHT_THRESHOLD = 4;
 	const lastAnswer = $history && $history[$history.length - 1];
@@ -15,7 +15,14 @@
     let saveDate;
     let isEditMode = false;
 
-	if (lastAnswer && isLateNight() && isLastNightAnswer(lastAnswer.timestamp)) {
+	if (
+        lastAnswer
+        && (
+            isLateNight()
+            && isLastNightAnswer(lastAnswer.timestamp)
+            || isTodaysAnswer(lastAnswer.timestamp)
+        )
+    ) {
         isEditMode = true;
 	}
     if (isEditMode) {

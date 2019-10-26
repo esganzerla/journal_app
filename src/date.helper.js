@@ -1,7 +1,9 @@
 export const LATE_NIGHT_THRESHOLD = 4;
 
 export function isLateNight(date = new Date()) {
-  return 0 <= date.getHours() < LATE_NIGHT_THRESHOLD;
+  const dateHour = date.getHours();
+
+  return 0 <= dateHour && dateHour < LATE_NIGHT_THRESHOLD;
 }
 export function isLastNightAnswer(timestamp) {
   if (timestamp) {
@@ -25,6 +27,19 @@ export function isLastNightAnswer(timestamp) {
 
   return false;
 }
+export function isTodaysAnswer(timestamp) {
+  if (timestamp) {
+    const nowDate = new Date();
+    const answerDate = new Date(timestamp);
+
+    return (
+      answerDate.getHours() > LATE_NIGHT_THRESHOLD &&
+      answerDate.getDate() === nowDate.getDate()
+    );
+  }
+
+  return false;
+}
 
 export function getRefDateTimestamp(timestamp) {
   const refDate = timestamp ? new Date(timestamp) : new Date();
@@ -37,7 +52,7 @@ export function getRefDateTimestamp(timestamp) {
       0,
     );
   } else {
-    return refDate;
+    return +refDate;
   }
 }
 
