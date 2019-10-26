@@ -7,13 +7,13 @@ self.addEventListener('fetch', handleNetwork);
 self.addEventListener('activate', clearOldCache);
 
 function scheduleNotification(event) {
+  if (DEV_SERVER) return;
+
   setTimeout(function() {
     self.registration.showNotification('Remember your action points!');
   }, getTimeoutForNotification());
 
   function getTimeoutForNotification() {
-    if (DEV_SERVER) return 1000;
-
     const nowDate = new Date();
     const notificationDay =
       nowDate.getHours() > 0 ? nowDate.getDate() : nowDate.getDate() + 1;
