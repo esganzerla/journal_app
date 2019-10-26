@@ -1,43 +1,40 @@
 <script>
-	export let timestamp
-	export let greatful_reasons = ['','','']
-	export let contribution_ideas = ''
-	export let reframe_actions = ''
-	export let todo_items = ['','','','','']
-	export let todo_confidence = 0
-	
-	const date = new Date(timestamp)
-		.toLocaleDateString('en-US', {
-			weekday: 'long',
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		})
+import { getReadableDate } from './date.helper.js';
+
+export let date
+export let timestamp
+export let greatful_reasons = ['','','']
+export let contribution_ideas = ''
+export let reframe_actions = ''
+export let todo_items = ['','','','','']
+export let todo_confidence = 0
+
+const dateString = getReadableDate(date);
 </script>
 
 <style>
-	* { line-height: 1.35em; }
-	label { font-weight: 600; cursor: pointer; }
-	dl { display: none; margin-top: 8px }
-	small { float: right; font-weight: 400; }
-	input:checked + dl { display: block; }
-	input { visibility: none; position: absolute; top: -999px; left: -999px; }
-	
-	dt {
-		font-weight: 600;
-		margin-top: 32px;
-		margin-bottom: 8px;
-	}
-	dd {
-		margin-left: 16px;
-	}
-	ol { margin: 0; padding-left: 16px; }
+* { line-height: 1.35em; }
+label { font-weight: 600; cursor: pointer; }
+dl { display: none; margin-top: 8px }
+small { float: right; font-weight: 400; }
+input:checked + dl { display: block; }
+input { visibility: none; position: absolute; top: -999px; left: -999px; }
+
+dt {
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 8px;
+}
+dd {
+    margin-left: 16px;
+}
+ol { margin: 0; padding-left: 16px; }
 </style>
 
 <hr>
 <label for="{timestamp}">
-	Date: {date}
-	<small>Click to see more</small>
+    {dateString}
+    <small>Click to see more</small>
 </label>
 <input type="checkbox" id="{timestamp}">
 <dl>

@@ -1,52 +1,51 @@
 <script>
 	import { history } from './store.js'
 	import { createEventDispatcher } from 'svelte';
+    import {now, isLateNight, isLastNightAnswer, getRefDateTimestamp} from './date.helper.js';
 
-	const dispatch = createEventDispatcher();
+    const LATE_NIGHT_THRESHOLD = 4;
+	const lastAnswer = $history && $history[$history.length - 1];
 	
-	function saveAnswers() {
-		if (questionaireMode === 'edit') {
-			$history.pop()
-		}
-
-		history.set([
-			...$history,
-			{
-				timestamp: Date.now(),
-				greatful_reasons,
-				contribution_ideas,
-				reframe_actions,
-				todo_items,
-				todo_confidence
-			}
-		])
-		dispatch('newAnswerSaved')
-	}
-	
-	let questionaireMode = 'create'
 	let greatful_reasons = ['','','']
 	let contribution_ideas = ''
 	let reframe_actions = ''
 	let todo_items = ['','','','','']
 	let todo_confidence = ''
 
-	const lastHistory = $history && $history[$history.length - 1];
-	if (lastHistory) {
-		const today = new Date();
-		const earlyMorning = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 4);
-		const lateNight = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 3, 59);
+    let saveDate;
+    let isEditMode = false;
 
-		if (
-				lastHistory.timestamp > +earlyMorning
-				&& lastHistory.timestamp < +lateNight
-		) {
-			questionaireMode = 'edit'
-			greatful_reasons = lastHistory.greatful_reasons
-			contribution_ideas = lastHistory.contribution_ideas
-			reframe_actions = lastHistory.reframe_actions
-			todo_items = lastHistory.todo_items
-			todo_confidence = lastHistory.todo_confidence
+	if (lastAnswer && isLateNight() && isLastNightAnswer(lastAnswer.timestamp)) {
+        isEditMode = true;
+	}
+    if (isEditMode) {
+        greatful_reasons = lastAnswer.greatful_reasons
+        contribution_ideas = lastAnswer.contribution_ideas
+        reframe_actions = lastAnswer.reframe_actions
+        todo_items = lastAnswer.todo_items
+        todo_confidence = lastAnswer.todo_confidence
+    }
+	
+	function saveAnswers() {
+		if (isEditMode) {
+			$history.pop()
 		}
+
+		history.update(answers => { return [
+            ...answers,
+            {
+                date: getRefDateTimestamp(),
+                timestamp: Date.now(),
+                greatful_reasons,
+                contribution_ideas,
+                reframe_actions,
+                todo_items,
+                todo_confidence
+            }
+        ] });
+
+        const dispatch = createEventDispatcher();
+		dispatch('newAnswerSaved');
 	}
 </script>
 

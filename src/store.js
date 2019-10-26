@@ -1,14 +1,23 @@
 import {writable} from 'svelte/store';
+import {getRefDateTimestamp} from './date.helper.js';
 
-/* export const history = writable([]); */
-// export const history = writable([{"timestamp":1571943662852,"greatful_reasons":["das","das","ewq"],"contribution_ideas":"daseqw","reframe_actions":"das","todo_items":["eqw","ewq","eqw","eqw","eqw"],"todo_confidence":3}]);
-const localStorageHistory =
+let localStorageHistory =
   localStorage.getItem('history') &&
   JSON.parse(localStorage.getItem('history'));
+
+upgradeStore();
+function upgradeStore() {
+  if (localStorageHistory) {
+    localStorageHistory = localStorageHistory.map(answer => {
+      if (answer.date) return answer;
+
+      return {...answer, date: getRefDateTimestamp(answer.timestamp)};
+    });
+  }
+}
 
 export const history = writable(localStorageHistory || []);
 
 history.subscribe(value => {
   localStorage.setItem('history', JSON.stringify(value));
-  // normalize for dates
 });
