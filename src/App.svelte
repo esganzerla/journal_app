@@ -1,9 +1,9 @@
 <script>
-	import Questionaire from './Questionaire.svelte'
+	import Questionnaire from './Questionnaire.svelte'
 	import HistoryAnswer from './HistoryAnswer.svelte'
 	import { history } from './store.js'
 	
-	let selectedPage = 'questionaire'
+	let selectedPage = 'questionnaire'
 	
 	function changePage(page) {
 		return () => selectedPage = page;
@@ -14,7 +14,7 @@
 	.app {
 		max-width: 600px;
 		margin: 0 auto;
-        padding: 0 16px 32px 16px;
+        padding: 0 16px 64px 16px;
 	}
     .menu {
         display: flex;
@@ -33,14 +33,35 @@
         text-align: center;
         width: 50%;
     }
+    .answers {
+        margin-top: 48px;
+    }
+        :global(hr) {
+            opacity: 0.15;
+            border-color: #000;
+            border-width: 1px 0 0 0;
+        }
+    @media (prefers-color-scheme: dark) {
+        :global(body, input, textarea) {
+            background-color: #000;
+            color: #DDD;
+        }
+        :global(button) {
+            background-color: #333;
+            color: #DDD;
+        }
+        :global(hr) {
+            border-color: #FFF;
+        }
+    }
 </style>
 
 <div class="app">
 		<ul class="menu">
-            {#if selectedPage === 'questionaire'}
-                <li on:click={changePage('questionaire')}><b>Questionaire</b></li>
+            {#if selectedPage === 'questionnaire'}
+                <li on:click={changePage('questionnaire')}><b>Questionnaire</b></li>
             {:else}
-                <li on:click={changePage('questionaire')}>Questionaire</li>
+                <li on:click={changePage('questionnaire')}>Questionnaire</li>
             {/if}
             {#if selectedPage === 'history'}
                 <li on:click={changePage('history')}><b>History</b></li>
@@ -49,8 +70,8 @@
             {/if}
 		</ul>
 
-	{#if selectedPage === 'questionaire'}
-		<Questionaire on:newAnswerSaved={changePage('history')} />
+	{#if selectedPage === 'questionnaire'}
+		<Questionnaire on:newAnswerSaved={changePage('history')} />
 	
 	{:else}
         {#if !$history.length}

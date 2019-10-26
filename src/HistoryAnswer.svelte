@@ -13,28 +13,28 @@ const dateString = getReadableDate(date);
 </script>
 
 <style>
-* { line-height: 1.35em; }
-label { font-weight: 600; cursor: pointer; }
-dl { display: none; margin-top: 8px }
-small { float: right; font-weight: 400; }
-input:checked + dl { display: block; }
-input { visibility: none; position: absolute; top: -999px; left: -999px; }
-
-dt {
-    font-weight: 600;
-    margin-top: 32px;
-    margin-bottom: 8px;
-}
-dd {
-    margin-left: 16px;
-}
-ol { margin: 0; padding-left: 16px; }
+	* { line-height: 1.35em; }
+	label { font-weight: 600; cursor: pointer; }
+	dl { display: none; margin-top: 8px }
+	small { float: right; font-weight: 400; }
+	input:checked + dl { display: block; }
+	input:not(.todo_item) { visibility: none; position: absolute; top: -999px; left: -999px; }
+	
+	dt {
+		font-weight: 600;
+		margin-top: 32px;
+		margin-bottom: 8px;
+	}
+	dd {
+		margin-left: 16px;
+	}
+	ol { margin: 0; padding-left: 16px; }
+    hr { margin: 16px 0; }
 </style>
 
-<hr>
 <label for="{timestamp}">
     {dateString}
-    <small>Click to see more</small>
+	<small>(expand)</small>
 </label>
 <input type="checkbox" id="{timestamp}">
 <dl>
@@ -81,3 +81,4 @@ ol { margin: 0; padding-left: 16px; }
 		{todo_confidence}
 	</dd>
 </dl>
+<hr>
